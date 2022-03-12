@@ -14,7 +14,7 @@ import Create from "./ElementCreators";
 import NotePad from "./NotePad";
 
 class App{
-  static tasks = ["task1", "task2", "task3", "task4"]
+  static tasks = ["task1", "task2", "task3", "task4", "task5", "task6"]
 
   static loadContent(root){
     Create.div("note-pad","id",root)
