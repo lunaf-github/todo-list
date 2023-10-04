@@ -1,7 +1,7 @@
-const Task = require('../model/taskModel.js');
+const Task = require('../../model/taskModel.js');
 
 
-const taskController{
+const taskController = {
 
   async createTask(req,res,next){
     const {} = req.body;
