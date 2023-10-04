@@ -11,7 +11,6 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),
-        
     },
     plugins: [
         new HtmlWebpackPlugin({template: './client/index.html'}),
@@ -52,3 +51,4 @@ module.exports = {
         hot: true,
      },
 };
+
