@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const tutorialController = require('./controllers/tutorialControllers.js');
 const mongoose = require('mongoose');
+const Task = require('../model/taskModel.js');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
@@ -26,34 +27,55 @@ app.use(express.json());
   In the example below, middleware 4 does not have a next, so if a client asks for an unknown route, the 
   Unknown route handler will never be triggered because the request stoped at middleware 4. 
  
+
+  (start: req obj travels)
+    |
   app.use((req, res, next) => {
     console.log('middleware 1');
     throw new Error('oh no!')
     next()
   });
-
-
+    |
+    |
   app.use((req, res, next) => {
     console.log('middleware 2');
     next()
   });
-
+    |
   app.use((req, res, next) => {
     console.log('middleware 3');
     next()
   });
-
+    |
   app.use((req, res, next) => console.log('middleware 4'));
+  (stop)
 */
 
+
+// Use environmental variables instead of adding the database URI, you don't want to commit exposed credentials
+// Using dotenv, we can crate custom environmental variables, also make sure that you include the .env inside
+// your .gitignore file. 
+
+// To find URI, login to MongoDB atlas account, go to the security section of the left side bar menu and click
+// "Database Access". There, you can find the username and set the password for your database. 
+
 mongoose
-  .connect(process.env.MONGO_URI, {
+  .connect(process.env.DATABASE_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    dbName: 'Users',
+    dbName: process.env.DATABASE_NAME,
   })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.log(`Failed to connect to database: ${err}`));
+
+
+
+async function entryDoc() {
+  const task = new Task({task: "Do the laundry!"});
+  await task.save();
+}
+
+entryDoc();
 
 // another middleware, we can require middleware from other files.
 app.use(tutorialController.logger);
