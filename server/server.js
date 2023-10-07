@@ -3,11 +3,9 @@ const app = express();
 const path = require('path');
 const tutorialController = require('./controllers/tutorialControllers.js');
 const mongoose = require('mongoose');
-
+require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-
-
 
 // if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
 // The request does not get transverse to other middlewares. 
@@ -19,7 +17,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 
 app.use(express.urlencoded({ extended: true }));
 
-//Body Parser MiddleWare: This middleware parses the json stored in the request body and transforms it to a javascript object which can be accessed through req.body. 
+//Body Parser MiddleWare This middleware parses the json stored in the request body and transforms it to a javascript object which can be accessed through req.body. 
 app.use(express.json());
 
 /**
@@ -48,18 +46,14 @@ app.use(express.json());
   app.use((req, res, next) => console.log('middleware 4'));
 */
 
-
-
-// const MONGO_URI = "mongodb+srv://fluna:nle2dwiM49GpjrN0@cluster0.zhcdp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-
-// mongoose
-//   .connect(MONGO_URI, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//     dbName: 'Users',
-//   })
-//   .then(() => console.log('Connected to MongoDB'))
-//   .catch((err) => console.log(`Failed to connect to database: ${err}`));
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: 'Users',
+  })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.log(`Failed to connect to database: ${err}`));
 
 // another middleware, we can require middleware from other files.
 app.use(tutorialController.logger);

@@ -13,6 +13,7 @@
   "dependencies": {
     "@babel/plugin-transform-async-to-generator": "^7.1.0",
     "@babel/runtime": "^7.1.2",
+    "dotenv": "^16.3.1",
     "express": "^4.17.3",
     "mongo": "^0.1.0",
     "mongodb": "^4.4.1",
