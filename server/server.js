@@ -3,6 +3,10 @@ const app = express();
 const path = require('path');
 const tutorialController = require('./controllers/tutorialControllers.js');
 const mongoose = require('mongoose');
+// cookie parse is used to parse a cookie and makes it accessible to req.cookies. 
+const cookieParser = require('cookie-parser')
+// This is for creating session cookies. This module doesn't need cookie parse any more, it can parse cookies now. 
+const session = require('express-session')
 const Task = require('../model/taskModel.js');
 require('dotenv').config();
 
@@ -20,6 +24,17 @@ app.use(express.urlencoded({ extended: true }));
 
 //Body Parser MiddleWare This middleware parses the json stored in the request body and transforms it to a javascript object which can be accessed through req.body. 
 app.use(express.json());
+
+//Use cookie parser
+app.use(cookieParse());
+
+//Setting gup session cookie
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
 
 /**
   The middlewares below will trigger in order. Each middleware processes and transforms the request as needed. 
@@ -82,6 +97,15 @@ app.use(tutorialController.logger);
 
 // Members API route
 app.use('/api/members', require('./routes/members'))
+
+
+// I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
+// as resonse. 
+app.get('/cookie', (req, res) => {
+  console.log('here')
+  res.cookie("greating", "hello-worlds")
+  res.json({greeting: "cookie"})
+});
 
 // Unknown route handler, this endpoint should be the last one and it is meant to catch any URI requests that did not match 
 // any available endpoints 
