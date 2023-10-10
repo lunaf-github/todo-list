@@ -1,25 +1,41 @@
+// Importing and running express application
+// Dependency: 'express'
 const express = require('express');
 const app = express();
+
+// Node.js Built-in module
+// Dependency: Not install required
 const path = require('path');
-const tutorialController = require('./controllers/tutorialControllers.js');
-const mongoose = require('mongoose');
-// cookie parse is used to parse a cookie and makes it accessible to req.cookies. 
+
+// cookie parser receives cookies from clients and makes them accessible to req.cookies. 
 const cookieParser = require('cookie-parser')
-// This is for creating session cookies. This module doesn't need cookie parse any more, it can parse cookies now. 
+
+// This is for creating session cookies. This module doesn't need cookie parser, it can parse cookies now. 
 const session = require('express-session')
-const Task = require('../model/taskModel.js');
+
+// Package used to create custom environmental variables, make sure to import this module before using custom environmental variables
+// Need to create a .env file to add custom variables
+// Dependencies: dotenv
 require('dotenv').config();
 
+// Defining port, it is best practice to create a custom environment variable. 
+// Add a fallback port just in case the environmental varible is not provided
 const PORT = process.env.PORT || 3000;
 
-// if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
-// The request does not get transverse to other middlewares. 
 
+const tutorialController = require('./controllers/tutorialControllers.js');
+const mongoose = require('mongoose');
+const db = require('../model/postgreModel.js');
+
+const Task = require('../model/taskModel.js');
+
+
+// if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
+// The request does not move to other middlewares because there is no next() implemented within the static() method. 
 app.use(express.static(path.join(__dirname, '../build'))); 
 
 // This middleware parses URL encoded data and sends it to the req.body. When the extended option is set to true (it should be by default)
 // the URL encoded data gets parsed in a neater way. 
-
 app.use(express.urlencoded({ extended: true }));
 
 //Body Parser MiddleWare This middleware parses the json stored in the request body and transforms it to a javascript object which can be accessed through req.body. 
@@ -75,7 +91,7 @@ app.use(session({
 // "Database Access". There, you can find the username and set the password for your database. 
 
 mongoose
-  .connect(process.env.DATABASE_URI, {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     dbName: process.env.DATABASE_NAME,
@@ -123,7 +139,9 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
-
+// This function starts the web server and listens for incoming HTTP requests on a specific port
+// Make sure to add this after you have configured your routes, middleware, and other settings to 
+// make sure that the web server is properly configures before it starts running
 app.listen(PORT, () => {
  console.log(`Server listening on port: ${PORT}`);
 });
