@@ -15,7 +15,7 @@ const table = process.env.PG_TABLE_NAME;
 // Make sure to use single quotes, double quotes does not work
 
 
-// Create
+// ***************************************  Create   ************************************************************
 // The INTO is optional, but is best practice to use becuse some RDBMS require it and it makes
 // your query much more potable. Also, it is more readable because you are adding a row into the table,
 // not adding a table into a table
@@ -41,7 +41,7 @@ const addTask = async function(req, res, next) {
 
 }
 
-// Read
+// ***************************************  Read   ************************************************************
 const getTasks = async function(req, res, next) {
   const query = `SELECT * FROM ${table}`;
 
@@ -58,15 +58,29 @@ const getTasks = async function(req, res, next) {
   }
 }
 
+// ***************************************  Update   ************************************************************
 
-// Update
-const updateTask = function(req, res, next) {
+// Make sure to use single quotes for strings 
 
+const updateTask = async function(req, res, next) {
+  const { id, task: newValue} = req.body;
+  const query =  `UPDATE ${table} SET task='${newValue}' WHERE _id = ${id}`;
+  
+  try {
+    const result = await db.query(query);
+    res.locals.tasks = `Task updated`;
+    next();
+  } catch(err) {
+    next({
+      log: `Unable to update tasks in database, postgreMiddleware.updateTask, Error: ${err}`,
+      status: 404,
+      message: 'Unable to update task'
+    });
+  }
 }
 
-
-// Delete
-const deleteTask = function (req, res, next) {
+// ***************************************  Delete   ************************************************************
+const deleteTask = async function (req, res, next) {
 
 }
 
