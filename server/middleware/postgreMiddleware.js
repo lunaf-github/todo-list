@@ -2,17 +2,24 @@ const db = require('../../model/postgreModel');
 const table = process.env.PG_TABLE_NAME;
 
 // Creating table. 
-// Make sure to use double quotes for the column names. 
+// At first I though I need to add double qoutes for the column names.
+// Turns out I inserting a row with the wrong syntax, I neded to use
+// single quotes for the insert query values. 
 // EX. 
-// CREATE TABLE example (
-//   "_id" SERIAL PRIMARY KEY,
-//   "task" varChar(255) NOT NULL
-//  )
+  // CREATE TABLE example (
+  //   _id SERIAL PRIMARY KEY,
+  //   task varChar(255) NOT NULL
+  // )
   
 
+// We have different options for grabing information for our queries, 
+// I am not sure what cases they are recomended to use or not use.
+  // 1. We can use a payload,  the req.body
+  // 2. We can use path variables,  the req.params
+  // 3. We can get query variables, the req.query
 
 // Sytax
-// Make sure to use single quotes, double quotes does not work
+// Make sure to use single quotes for strings, double quotes does not work (exeption: CREATE TABLE)
 
 
 // ***************************************  Create   ************************************************************
@@ -67,7 +74,7 @@ const updateTask = async function(req, res, next) {
   const query =  `UPDATE ${table} SET task='${newValue}' WHERE _id = ${id}`;
   
   try {
-    const result = await db.query(query);
+    await db.query(query);
     res.locals.tasks = `Task updated`;
     next();
   } catch(err) {
@@ -80,8 +87,24 @@ const updateTask = async function(req, res, next) {
 }
 
 // ***************************************  Delete   ************************************************************
-const deleteTask = async function (req, res, next) {
 
+
+const deleteTask = async function (req, res, next) {
+  const { id } = req.body;
+  const query =  `DELETE FROM ${table} WHERE _id = ${id}`;
+  
+  try {
+    await db.query(query);
+    console.log(result)
+    res.locals.tasks = `Task Deleted`;
+    next();
+  } catch(err) {
+    next({
+      log: `Unable to delete tasks in database, postgreMiddleware.deleteTask, Error: ${err}`,
+      status: 404,
+      message: 'Unable to delete task'
+    });
+  }
 }
 
 module.exports = {

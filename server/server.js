@@ -119,6 +119,7 @@ entryDoc();
 app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
 app.post('/add', postgreMiddleware.addTask, taskController.sendTasks);
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
+app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
 
 
 // another middleware, we can require middleware from other files.
