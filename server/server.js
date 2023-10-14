@@ -1,4 +1,5 @@
-// Importing and running express application
+// **************************************************** Configuration *************************************************************************
+// Importing and instantiating express application
 // Dependency: 'express'
 const express = require('express');
 const app = express();
@@ -22,14 +23,19 @@ require('dotenv').config();
 // Add a fallback port just in case the environmental varible is not provided
 const PORT = process.env.PORT || 3000;
 
-
-const tutorialController = require('./controllers/tutorialControllers.js');
+// Import mongoose ORM
 const mongoose = require('mongoose');
-const db = require('../model/postgreModel.js');
 
-const Task = require('../model/taskModel.js');
+// ************************************************** Database Models ***********************************************************************
+const db = require('../model/postgreModel.js');  // potgres database pool
+const Task = require('../model/mongoModel.js');  // mongoDB Schema
 
+// **************************************************** Import Controllers and middleware ***************************************************************
+// const tutorialController = require('./controllers/tutorialControllers.js');
+const taskController = require('./controllers/taskController.js');
+const postgreMiddleware = require('./middleware/postgreMiddleware.js');
 
+// **************************************************** Use Middlewares *************************************************************************
 // if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
 // The request does not move to other middlewares because there is no next() implemented within the static() method. 
 app.use(express.static(path.join(__dirname, '../build'))); 
@@ -38,11 +44,12 @@ app.use(express.static(path.join(__dirname, '../build')));
 // the URL encoded data gets parsed in a neater way. 
 app.use(express.urlencoded({ extended: true }));
 
-//Body Parser MiddleWare This middleware parses the json stored in the request body and transforms it to a javascript object which can be accessed through req.body. 
+//Body Parser MiddleWare This middleware parses the json stored in the request body and transforms it to a javascript object which can be 
+//accessed through req.body. 
 app.use(express.json());
 
 //Use cookie parser
-app.use(cookieParse());
+app.use(cookieParser());
 
 //Setting gup session cookie
 app.use(session({
@@ -83,13 +90,13 @@ app.use(session({
 */
 
 
+// ************************************************ Mongo Connection ************************************************************************
 // Use environmental variables instead of adding the database URI, you don't want to commit exposed credentials
 // Using dotenv, we can crate custom environmental variables, also make sure that you include the .env inside
 // your .gitignore file. 
 
 // To find URI, login to MongoDB atlas account, go to the security section of the left side bar menu and click
 // "Database Access". There, you can find the username and set the password for your database. 
-
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -108,11 +115,18 @@ async function entryDoc() {
 
 entryDoc();
 
-// another middleware, we can require middleware from other files.
-app.use(tutorialController.logger);
 
+app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
+app.post('/add', postgreMiddleware.addTask, taskController.sendTasks);
+
+
+// another middleware, we can require middleware from other files.
+// app.use(tutorialController.logger);
+
+
+// ***************************************************** Routes **************************************************************************
 // Members API route
-app.use('/api/members', require('./routes/members'))
+// app.use('/api/members', require('./routes/members'))
 
 
 // I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
@@ -123,6 +137,8 @@ app.get('/cookie', (req, res) => {
   res.json({greeting: "cookie"})
 });
 
+
+// ************************************************* Error Handling ***********************************************************************
 // Unknown route handler, this endpoint should be the last one and it is meant to catch any URI requests that did not match 
 // any available endpoints 
 app.get('*', (req, res) => res.status(404).send('Page not Found'));
@@ -139,6 +155,8 @@ app.use((err, req, res, next) => {
   return res.status(errorObj.status).json(errorObj.message);
 });
 
+
+// ************************************************* Start Server *************************************************************************
 // This function starts the web server and listens for incoming HTTP requests on a specific port
 // Make sure to add this after you have configured your routes, middleware, and other settings to 
 // make sure that the web server is properly configures before it starts running
