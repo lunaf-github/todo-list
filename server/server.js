@@ -26,9 +26,12 @@ const PORT = process.env.PORT || 3000;
 // Import mongoose ORM
 const mongoose = require('mongoose');
 
+// Database Connections 
+const pgDB = require('./config/postgreConnect.js');  // potgres database pool connection
+const mongoDB = require('./config/mongoConnect.js');  // mongoDB connection
+
 // ************************************************** Database Models ***********************************************************************
-const db = require('../model/postgreModel.js');  // potgres database pool
-const Task = require('../model/mongoModel.js');  // mongoDB Schema
+const Task = require('./model/mongoModel.js');  // mongoDB Schema
 
 // **************************************************** Import Controllers and middleware ***************************************************************
 // const tutorialController = require('./controllers/tutorialControllers.js');
@@ -90,23 +93,9 @@ app.use(session({
   (stop)
 */
 
-
-// ************************************************ Mongo Connection ************************************************************************
-// Use environmental variables instead of adding the database URI, you don't want to commit exposed credentials
-// Using dotenv, we can crate custom environmental variables, also make sure that you include the .env inside
-// your .gitignore file. 
-
-// To find URI, login to MongoDB atlas account, go to the security section of the left side bar menu and click
-// "Database Access". There, you can find the username and set the password for your database. 
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    dbName: process.env.DATABASE_NAME,
-  })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.log(`Failed to connect to database: ${err}`));
-
+// another middleware, we can require middleware from other files.
+// app.use(tutorialController.logger);
+// ***************************************************** Endpoints **************************************************************************
 
 
 app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
@@ -114,14 +103,6 @@ app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskControl
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
 
-
-// another middleware, we can require middleware from other files.
-// app.use(tutorialController.logger);
-
-
-// ***************************************************** Routes **************************************************************************
-// Members API route
-// app.use('/api/members', require('./routes/members'))
 
 
 // I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
@@ -131,6 +112,10 @@ app.get('/cookie', (req, res) => {
   res.cookie("greating", "hello-worlds")
   res.json({greeting: "cookie"})
 });
+
+// ***************************************************** Routes **************************************************************************
+// Members API route
+// app.use('/api/members', require('./routes/members'))
 
 
 // ************************************************* Error Handling ***********************************************************************

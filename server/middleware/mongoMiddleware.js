@@ -1,4 +1,4 @@
-const Task = require('../../model/mongoModel.js');
+const Task = require('../model/mongoModel.js');
 
 
 const getTasks = function(req, res) {

@@ -1,4 +1,4 @@
-const db = require('../../model/postgreModel');
+const db = require('../config/postgreConnect');
 const table = process.env.PG_TABLE_NAME;
 
 // Creating table. 
