@@ -34,6 +34,7 @@ const Task = require('../model/mongoModel.js');  // mongoDB Schema
 // const tutorialController = require('./controllers/tutorialControllers.js');
 const taskController = require('./controllers/taskController.js');
 const postgreMiddleware = require('./middleware/postgreMiddleware.js');
+const mongoMiddleware = require('./middleware/mongoMiddleware.js');
 
 // **************************************************** Use Middlewares *************************************************************************
 // if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
@@ -108,16 +109,8 @@ mongoose
 
 
 
-async function entryDoc() {
-  const task = new Task({task: "Do the laundry!"});
-  await task.save();
-}
-
-entryDoc();
-
-
 app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
-app.post('/add', postgreMiddleware.addTask, taskController.sendTasks);
+app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskController.sendTasks);
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
 

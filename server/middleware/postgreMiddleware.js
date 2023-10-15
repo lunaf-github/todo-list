@@ -36,11 +36,11 @@ const addTask = async function(req, res, next) {
 
   try {
     const result = await db.query(query);
-    res.locals.tasks = result.rows;
+    res.locals.pgTasks = result.rows;
     next();
   } catch(err) {
     next({
-      log: `Unable to add tasks from database, postgreMiddleware.addTask, Error: ${err}`,
+      log: `Unable to add tasks to database, postgreMiddleware.addTask, Error: ${err}`,
       status: 500,
       message: 'Unable to add task'
     });
@@ -54,7 +54,7 @@ const getTasks = async function(req, res, next) {
 
   try {
     const result = await db.query(query);
-    res.locals.tasks = result.rows;
+    res.locals.pgTasks = result.rows;
     next();
   } catch(err) {
     next({
@@ -75,7 +75,7 @@ const updateTask = async function(req, res, next) {
   
   try {
     await db.query(query);
-    res.locals.tasks = `Task updated`;
+    res.locals.pgTasks = `Task updated`;
     next();
   } catch(err) {
     next({
@@ -96,7 +96,7 @@ const deleteTask = async function (req, res, next) {
   try {
     await db.query(query);
     console.log(result)
-    res.locals.tasks = `Task Deleted`;
+    res.locals.pgTasks = `Task Deleted`;
     next();
   } catch(err) {
     next({

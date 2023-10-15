@@ -1,6 +1,5 @@
 function sendTasks(req, res) {
-    console.log(res.locals.tasks)
-    res.json(res.locals.tasks)
+    res.json({pg: res.locals.pgTasks, mongo: res.locals.mongoTasks})
 }
 
 
