@@ -6,14 +6,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     mode: process.env.NODE_ENV,
     entry: {
-      src:'./client/index.js'
+      src:'./views/index.js'
     },
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),
     },
     plugins: [
-        new HtmlWebpackPlugin({template: './client/index.html'}),
+        new HtmlWebpackPlugin({template: './views/index.html'}),
     ],
     module: {
         rules: [
