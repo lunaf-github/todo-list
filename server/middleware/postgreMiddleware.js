@@ -1,5 +1,5 @@
 const db = require('../config/postgreConnect');
-const table = process.env.PG_TABLE_NAME;
+const table = process.env.PG_DB_NAME;
 
 // Creating table. 
 // At first I though I need to add double qoutes for the column names.

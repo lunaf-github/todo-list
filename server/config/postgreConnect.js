@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
-
+const createTable = require('./createTabel');
+const table = process.env.PG_DB_NAME;
 /**
  * What is a pool?
  * The pool is used to keep a limited amount of connections open. That way, we don't have
@@ -22,13 +23,14 @@ const pool = new Pool({
     connectionString: process.env.PG_URI
 });
 
-// *******************************************   connection testing  *****************************************************
-// I'm not sure if this is standard practice, but I needed this IIFE to test my PG DB connectoin upon starting my server. 
-(async function testPGConnection() {
-    // Creates a client which starts the DB connection (an object that allows me to query to database)
-    const client  = await pool.connect();
-    // Destroy the client, I don't want the client to use up a spot in my pool
-    client.release(true);
+
+
+// *******************************************   Initialize table   *****************************************************
+// I'm not sure if this is standard practice, but I want to automaticaly create the DB table if it does not exists
+// I need to declare and invoke a async function to run the create table query, so an IIFE will do the job.
+// This IIFE is also used to test my PG DB connectoin upon starting my server, because it will trigger the 'connect' event 
+(async function pgConnection() {
+    await pool.query(`CREATE TABLE IF NOT EXISTS ${table} ( _id SERIAL PRIMARY KEY, task varChar(255) NOT NULL);`)
 })();
 
 
