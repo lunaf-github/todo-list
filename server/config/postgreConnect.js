@@ -1,5 +1,4 @@
 const { Pool } = require('pg');
-const createTable = require('./createTabel');
 const table = process.env.PG_DB_NAME;
 /**
  * What is a pool?
