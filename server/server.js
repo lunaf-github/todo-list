@@ -95,7 +95,7 @@ app.use(session({
 
 // another middleware, we can require middleware from other files.
 // app.use(tutorialController.logger);
-// ***************************************************** Endpoints **************************************************************************
+// ***************************************************** API endoints **************************************************************************
 
 
 app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
@@ -103,7 +103,10 @@ app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskControl
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
 
-
+app.get('/login', (req, res) => {
+  console.log('login')
+  res.sendFile(path.resolve('./build/login.html'));
+});
 
 // I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
 // as resonse. 
