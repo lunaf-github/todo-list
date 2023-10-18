@@ -33,7 +33,7 @@ const pool = new Pool({
 })();
 
 
-// *******************************************   Logging  *****************************************************
+// *******************************************   Log Tracing  *****************************************************
 // The pool is an event emmiter, so we can create an event listener for the 'connect' event. 
 // This is used to let the developer know that our pg database has succesfully connected. 
 pool.on('connect', () => console.log('Connected to Postgres'));
