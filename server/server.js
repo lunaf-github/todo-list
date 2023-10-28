@@ -36,8 +36,10 @@ const Task = require('./model/mongoModel.js');  // mongoDB Schema
 // **************************************************** Import Controllers and middleware ***************************************************************
 // const tutorialController = require('./controllers/tutorialControllers.js');
 const taskController = require('./controllers/taskController.js');
+const sendJwtToken = require('./controllers/jwtController.js');
 const postgreMiddleware = require('./middleware/postgreMiddleware.js');
 const mongoMiddleware = require('./middleware/mongoMiddleware.js');
+const verifyJWT = require('./middleware/authenticateTokenMiddleware.js');
 
 // **************************************************** Use Middlewares *************************************************************************
 // if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
@@ -98,10 +100,13 @@ app.use(session({
 // ***************************************************** API endoints **************************************************************************
 
 
-app.get('/tasks', postgreMiddleware.getTasks, taskController.sendTasks);
+app.get('/tasks', verifyJWT, postgreMiddleware.getTasks, taskController.sendTasks);
 app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskController.sendTasks);
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
+app.post('/login', sendJwtToken);
+
+
 
 app.get('/login', (req, res) => {
   console.log('login')
