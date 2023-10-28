@@ -16,16 +16,15 @@ This is meant to be used as a reference for the following technology and languag
 
 <h2>Backend</h2>
 <ol>
-    <li>Node.js</li>
+    <li>Node.js - JavaScript runtime environment</li>
     <li>JavaScript</li>
-    <li>Express</li>
-    <li>Postgres</li> 
-    <li>PostgreSQL</li>
-    <li>MongoDB</li>  
-    <li>RestAPI</li> 
+    <li>Express - server framework</li>
+    <li>PostgreSQL - Relational Database</li>
+    <li>MongoDB - UnRelational Database</li>  
+    <li>RestAPI - API Architecture</li> 
 </ol>
 
-<h2>Data Transfer</h2>
+<h2>Data Transfer / Serialization </h2>
 <o1>
     <li>cookies</li>
     <li>session cookies</li>
@@ -34,10 +33,9 @@ This is meant to be used as a reference for the following technology and languag
 
 <h2>Security</h2>
 <ol>
-    <li>JWT</li>
-    <li>Session cookie Auth</li>
-    <li>bcrypt</li>
+    <li>JWT - Token-based Auth</li>
+    <li>Session cookie - Session-based Auth</li>
+    <li>bcrypt - slow hashing</li>
     <li>Google OAuth</li>
-    <li>session</li>
 </ol>
 
