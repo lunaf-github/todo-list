@@ -12,6 +12,7 @@ This is meant to be used as a reference for the following technology and languag
     <li>SASS/SCSS</li>
     <li>HTML</li>
     <li>JavaScript</li>
+    <li>Webpack</li>
 </ol>
 
 <h2>Backend</h2>
