@@ -1,3 +1,27 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    background-color: red;
+    background-color: rgba(0, 0, 0, 0.571);
+}
+
+.test {
+    background-color: black;
+}
+
+.user-inputs {
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.user-inputs_container {
+    display: flex;
+    justify-content: center;
+    border: 1px solid black;
+    box-shadow: 2px 2px 2px;
+    border-radius: 5px;
+    width: 50%;
+    padding: 5px;
 }

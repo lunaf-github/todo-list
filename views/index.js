@@ -1,5 +1,12 @@
 // the import statement causes the functions inside the imported document to run. 
-import App from './components/App.js'
+import App from './App.js'
+import DOM from './library/dom.js';
+
 import './styles.css'
 
-document.addEventListener('DOMContentLoaded', App.loadContent("root"))
+document.addEventListener('DOMContentLoaded', () => {
+    const root = document.getElementById('root');
+    DOM.render(root, App)
+})
+
+
