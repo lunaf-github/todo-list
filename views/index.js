@@ -1,6 +1,6 @@
 // the import statement causes the functions inside the imported document to run. 
 import App from './App.js'
-import DOM from './library/dom.js';
+import DOM from './libraries/dom.js';
 
 import './styles.css'
 

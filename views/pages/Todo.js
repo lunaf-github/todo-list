@@ -1,4 +1,4 @@
-import DOM from '../library/dom';
+import DOM from '../libraries/dom';
 
 
 function Todo() {

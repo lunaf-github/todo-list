@@ -4,10 +4,10 @@
 *functions for an application, whereas static properties are useful for caches, 
 *fixed-configuration, or any other data you don't need to be replicated across instances.
 */
-import DOM from './library/dom';
+import DOM from './libraries/dom';
 import Login from './pages/Login';
 import Todo from './pages/Todo';
-import observable from './library/dataCenter';
+import observable from './libraries/dataCenter';
 
 const initialState = {
   currentPage: 'login'
@@ -18,12 +18,8 @@ function App() {
   let state = initialState;
 
   function changepage(newState) {
-
     state.currentPage = newState.currentPage;
-    console.log('subscriber')
-    
     DOM.rerender(App());
-  
   }
 
   observable.subscribe(changepage);

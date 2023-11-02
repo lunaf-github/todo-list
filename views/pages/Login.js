@@ -1,5 +1,5 @@
-import DOM from '../library/dom'
-import observable from '../library/dataCenter';
+import DOM from '../libraries/dom'
+import observable from '../libraries/dataCenter';
 function Login() {
 
     async function handleLogin(e) {
@@ -15,7 +15,6 @@ function Login() {
         const data = await res.json();
         
         sessionStorage.setItem('token', data.accessToken);
-        console.log('login')
         observable.setState({currentPage: 'todo'});
     }
 
