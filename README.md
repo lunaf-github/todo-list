@@ -21,7 +21,7 @@ This is meant to be used as a reference for the following technology and languag
     <li>JavaScript</li>
     <li>Express - server framework</li>
     <li>PostgreSQL - Relational Database</li>
-    <li>MongoDB - UnRelational Database</li>  
+    <li>MongoDB - NoSQL Database</li>  
     <li>RestAPI - API Architecture</li> 
 </ol>
 
