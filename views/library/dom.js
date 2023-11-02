@@ -36,7 +36,6 @@ const DOM = {
             element = element();
         }
 
-
         if (!this.isStandardElement(element)) {
             console.warn(element + "is not a standard element");
         }
@@ -44,7 +43,6 @@ const DOM = {
         this.root.appendChild(element);
     },
     rerender: function(component) {
-        console.log('rerenderer', component)
         this.root.innerHTML = '';
         this.root.append(component);
     }
