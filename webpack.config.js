@@ -5,26 +5,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     mode: process.env.NODE_ENV,
-    entry: {
-      main:'./views/index.js',
-      login: './views/login.js'
-    },
+    entry: './views/index.js',
     output: {
-        filename: '[name].js',
+        filename: 'bundle.js',
         path: path.resolve(__dirname, 'build'),
+        clean: true, // good practice to clean the build folder before each build
     },
     plugins: [
         new HtmlWebpackPlugin({
             template: './views/index.html',
-            filename: 'index.html',
-            chunks: ['main']
-            
+            filename: 'index.html',        
         }),
-        new HtmlWebpackPlugin({
-            template: './views/login.html',
-            filename: 'login.html',
-            chunks: ['login']
-        })
     ],
     module: {
         rules: [
@@ -51,6 +42,9 @@ module.exports = {
                     loader: "html-loader",
                 }
         ]
+    },
+    resolve: {
+        extensions: ['.js']
     },
     devServer: {
         static: {

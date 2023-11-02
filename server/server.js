@@ -42,9 +42,23 @@ const mongoMiddleware = require('./middleware/mongoMiddleware.js');
 const verifyJWT = require('./middleware/authenticateTokenMiddleware.js');
 
 // **************************************************** Use Middlewares *************************************************************************
-// if the requested URI is the root, the express.static() middleware acts as an endpoint and will send the static files. 
-// The request does not move to other middlewares because there is no next() implemented within the static() method. 
-app.use(express.static(path.join(__dirname, '../build'))); 
+// The express.static(path, {options}) middleware serves static files to the client. It will look at req.url to 
+// find out what file to send. The file name needs to be specified on the url. For example, http://localhost:3000/login.html
+// In this example, the login HTML will be sent to the client if it exists inside the directory. 
+// If there is no file name in our url path, the static method will send the index.html if available. If the url requests for 
+// a file that does not exist in our directory, it will run the next() function so other middlewares can handle the fallback. 
+// This is the reason why I receive the index.html file when I request for localhost:3000/.  I can disable
+// this with the options objected, by setting the index property to false or I can set a different file to be sent instead. 
+// the requests object does not gets passed to the next middleware if a file is found and sent to the client. 
+
+// It is not good practice to send my entire build folder to the client if we are planning to add authentication because
+// the client wil have access to all the files by typing the file they want inside the url, making authentication useless. 
+//The static method is great for files and other assets that do not contain sensitive information. 
+//app.use(express.static(path.join(__dirname, '../build'))); <-- I removed this because I'm adding authentication
+
+app.use(express.static(path.join(__dirname, '../assets')))
+app.use(express.static(path.join(__dirname, '../build')))
+
 
 // This middleware parses URL encoded data and sends it to the req.body. When the extended option is set to true (it should be by default)
 // the URL encoded data gets parsed in a neater way. 
@@ -99,6 +113,7 @@ app.use(session({
 // app.use(tutorialController.logger);
 // ***************************************************** API endoints **************************************************************************
 
+// app.get('/', taskController.sendLogin);
 
 app.get('/tasks', verifyJWT, postgreMiddleware.getTasks, taskController.sendTasks);
 app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskController.sendTasks);
@@ -107,11 +122,6 @@ app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
 app.post('/login', sendJwtToken);
 
 
-
-app.get('/login', (req, res) => {
-  console.log('login')
-  res.sendFile(path.resolve('./build/login.html'));
-});
 
 // I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
 // as resonse. 
@@ -129,7 +139,11 @@ app.get('/cookie', (req, res) => {
 // ************************************************* Error Handling ***********************************************************************
 // Unknown route handler, this endpoint should be the last one and it is meant to catch any URI requests that did not match 
 // any available endpoints 
-app.get('*', (req, res) => res.status(404).send('Page not Found'));
+app.get('*', (req, res) => {
+  console.log(req.url);
+  res.status(404).send('Page not Found')
+} 
+);
 
 
 // Global error handler
@@ -140,6 +154,7 @@ app.use((err, req, res, next) => {
     message: { err: 'An error occurred' },
   };
   const errorObj = Object.assign({}, defaultErr, err);
+  console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 
