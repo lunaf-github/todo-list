@@ -7,9 +7,9 @@
     "start": "cross-env NODE_ENV=production node server/server.js",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "dev-build": "cross-env NODE_ENV=development webpack --config webpack.config.js",
-    "dev-server": "cross-env NODE_ENV=development nodemon ./server/server.js",
-    "dev-views": "cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color",
-    "dev-both": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color\" \"nodemon ./server/server.js\""
+    "dev-backend": "cross-env NODE_ENV=development nodemon ./server/server.js",
+    "dev-frontend": "cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color",
+    "dev": "concurrently \"cross-env NODE_ENV=development webpack-dev-server --open --hot --progress --color\" \"nodemon ./server/server.js\""
   },
   "author": "Fernando Luna",
   "license": "ISC",
