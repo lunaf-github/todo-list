@@ -1,30 +1,39 @@
 import DOM from '../libraries/dom';
+import DOM2 from '../libraries/doms';
+import NavBar from '../components/NavBar';
+
+const {h1, div, button, input, form, ul, li} = DOM2;
 
 
 function Todo() {
 
     function handleAddTask(e) {
         e.preventDefault();
-        const formData = new FormData(taskInputForm)
-
+        const formData = new FormData(e.currentTarget)
         const newTask = formData.get('addTaskInput')
+        e.currentTarget.reset()
+        taskContainer.append(li({}, newTask))
     }
 
-    const mainHeader = DOM.createElement('h1', {}, 'TO DO List')
-    const taskInput = DOM.createElement(
-        'input', 
-        {type: 'text', placeholder: 'Enter new task', name: 'addTaskInput'}
+
+    const taskContainer = ul();
+
+    return (
+        div({},[
+            NavBar(),
+            div({}, 
+                form({onsubmit: handleAddTask, class: 'user-inputs_container theme--light'},[
+                    input({type: 'text', placeholder: 'Enter new task', name: 'addTaskInput'}),
+                    button({class: 'button--light'},
+                        'Add' 
+                    )
+                ])
+            ),
+            taskContainer
+        ])
     );
-    const addTaskBtn = DOM.createElement('button', {}, 'Add');
-
-
-    const taskInputForm = DOM.createElement('form', {onsubmit: handleAddTask}, [taskInput, addTaskBtn]);
-    const formContainer = DOM.createElement('div', {class: 'user-inputs_container'}, taskInputForm);
-
-
-
-
-    return formContainer;
 }
+
+
 
 export default Todo;

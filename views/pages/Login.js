@@ -1,30 +1,43 @@
 import DOM from '../libraries/dom'
 import observable from '../libraries/dataCenter';
+
+import DOM2 from '../libraries/doms';
+
+const {div, button, input, form} = DOM2;
+
+
 function Login() {
 
     async function handleLogin(e) {
         e.preventDefault();
+        console.log(e.currentTarget)
+        const formData = new FormData(e.currentTarget);
+        const username = formData.get('username');
+        const password = formData.get('password');
 
         const res = await fetch('/login', {
             method: 'POST',
             headers: {
                 "Content-Type": "Application/json",
             },
-            body: JSON.stringify({username: username.value})
+            body: JSON.stringify({username, password})
         });
-        const data = await res.json();
         
+        const data = await res.json();        
         sessionStorage.setItem('token', data.accessToken);
         observable.setState({currentPage: 'todo'});
     }
 
-    const password = DOM.createElement('input', {type: 'password', placeholder: 'Password', name:'password'});
-    const username = DOM.createElement('input', {type: 'text', placeholder: 'Username', name:'username'});
-    const loginBtn = DOM.createElement('button', {onclick: handleLogin}, 'Login')
-   
-    const form = DOM.createElement('form', {class:'login-form'}, [username, password, loginBtn])
-    
-    return  DOM.createElement('div', {class: 'login'}, form);
+
+    return (
+        div({class: 'login'}, 
+            form({class:'login-form', onsubmit: handleLogin}, [
+                input({type: 'password', placeholder: 'Password', name:'password'}), 
+                input({type: 'text', placeholder: 'Username', name:'username'}), 
+                button({}, 'Login')
+            ])
+        )
+    );
 }
 
 export default Login;
