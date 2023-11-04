@@ -12,7 +12,6 @@ const dataCenter = {
         return state[key];
     },
     setState: function(newState) {
-        console.log('setState')
         for (const key of Object.keys(newState)) {
             state[key] = newState[key];
         }
@@ -27,7 +26,6 @@ const dataCenter = {
     },
 
     notify: function(state) {
-        console.log('notify')
         subscribers.forEach((subscriber) => subscriber(state))
     },
 }
