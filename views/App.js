@@ -8,6 +8,8 @@ import DOM from './libraries/dom';
 import Login from './pages/Login';
 import Todo from './pages/Todo';
 import observable from './libraries/dataCenter';
+import Signup from './pages/Signup';
+
 
 const initialState = {
   currentPage: 'login'
@@ -17,12 +19,15 @@ const initialState = {
 function App() {
   let state = initialState;
 
+  observable.subscribe(changepage)
+
+
   function changepage(newState) {
     state.currentPage = newState.currentPage;
+    observable.unsubscribe(changepage);
     DOM.rerender(App());
   }
 
-  observable.subscribe(changepage);
 
 
   switch (state.currentPage) {
@@ -30,6 +35,8 @@ function App() {
       return Login();
     case 'todo':
       return Todo();
+    case 'signup':
+      return Signup();
   }
 
 }

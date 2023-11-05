@@ -1,4 +1,3 @@
-import DOM from '../libraries/dom';
 import DOM2 from '../libraries/doms';
 import NavBar from '../components/NavBar';
 
@@ -20,7 +19,7 @@ function Todo() {
 
     return (
         div({},[
-            NavBar(),
+            NavBar({pageType: 'login'}),
             div({}, 
                 form({onsubmit: handleAddTask, class: 'user-inputs_container theme--light'},[
                     input({type: 'text', placeholder: 'Enter new task', name: 'addTaskInput'}),

@@ -33,7 +33,7 @@ class DOM {
         if (content) {
             if (Array.isArray(content)) {
                 content.forEach(child => {
-                    element.appendChild(child);
+                    if (child) element.appendChild(child);
                 })
             } else {
                 element.append(content);

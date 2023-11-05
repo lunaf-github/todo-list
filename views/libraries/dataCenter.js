@@ -4,7 +4,7 @@ let state = {
     theme: 'dark'
 }
 
-const subscribers = [];
+let subscribers = new Set();
 
 
 const dataCenter = {
@@ -18,15 +18,15 @@ const dataCenter = {
         this.notify(state)
     },
     subscribe: function(func) {
-        subscribers.push(func)
+        subscribers.add(func)
     },
 
     unsubscribe: function(func) {
-        subscribers = subscribers.filter((subscriber) => subscriber != func)
+        subscribers = new Set(Array.from(subscribers).filter((subscriber) => subscriber != func));
     },
 
     notify: function(state) {
-        subscribers.forEach((subscriber) => subscriber(state))
+        Array.from(subscribers).forEach((subscriber) => subscriber(state))
     },
 }
 
