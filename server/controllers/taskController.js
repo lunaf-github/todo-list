@@ -6,7 +6,6 @@ function sendTasks(req, res) {
 
 function sendLogin(req, res) {
     return res.sendFile(path.resolve('./build/login/login.html'));
-    // res.sendFile(path.resolve('./build/login.js'));
 }
 
 

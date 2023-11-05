@@ -40,6 +40,9 @@ const sendJwtToken = require('./controllers/jwtController.js');
 const postgreMiddleware = require('./middleware/postgreMiddleware.js');
 const mongoMiddleware = require('./middleware/mongoMiddleware.js');
 const verifyJWT = require('./middleware/authenticateTokenMiddleware.js');
+const verifySignupInfoMiddleware = require('./middleware/veryifySignupInfoMiddleware.js');
+const signupMiddleware = require('./middleware/signupMiddleware.js');
+const authenticateUserMiddleware = require('./middleware/authenticateUserMiddleware.js');
 
 // **************************************************** Use Middlewares *************************************************************************
 // The express.static(path, {options}) middleware serves static files to the client. It will look at req.url to 
@@ -116,10 +119,13 @@ app.use(session({
 // app.get('/', taskController.sendLogin);
 
 app.get('/tasks', verifyJWT, postgreMiddleware.getTasks, taskController.sendTasks);
-app.post('/add', postgreMiddleware.addTask, mongoMiddleware.addTask, taskController.sendTasks);
+app.post('/add', postgreMiddleware.addTask, taskController.sendTasks);
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
-app.post('/login', sendJwtToken);
+app.post('/login', authenticateUserMiddleware, sendJwtToken);
+app.post('/signup', verifySignupInfoMiddleware, signupMiddleware, (req, res) => {
+  return res.status(201).send({success: true});
+})
 
 
 

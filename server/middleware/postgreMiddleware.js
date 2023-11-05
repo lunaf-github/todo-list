@@ -95,7 +95,6 @@ const deleteTask = async function (req, res, next) {
   
   try {
     await db.query(query);
-    console.log(result)
     res.locals.pgTasks = `Task Deleted`;
     next();
   } catch(err) {
