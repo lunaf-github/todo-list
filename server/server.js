@@ -34,15 +34,16 @@ const mongoDB = require('./config/mongoConnect.js');  // mongoDB connection
 const Task = require('./model/mongoModel.js');  // mongoDB Schema
 
 // **************************************************** Import Controllers and middleware ***************************************************************
-// const tutorialController = require('./controllers/tutorialControllers.js');
+// controllers
 const taskController = require('./controllers/taskController.js');
 const sendJwtToken = require('./controllers/jwtController.js');
+
+// middleware
 const postgreMiddleware = require('./middleware/postgreMiddleware.js');
-const mongoMiddleware = require('./middleware/mongoMiddleware.js');
-const verifyJWT = require('./middleware/authenticateTokenMiddleware.js');
-const verifySignupInfoMiddleware = require('./middleware/veryifySignupInfoMiddleware.js');
+const verifyToken = require('./middleware/verifyToken.js');
+const validateSignupInfo = require('./middleware/validateSignupInfo.js');
 const signupMiddleware = require('./middleware/signupMiddleware.js');
-const authenticateUserMiddleware = require('./middleware/authenticateUserMiddleware.js');
+const authenticateUser = require('./middleware/authenticateUser.js');
 
 // **************************************************** Use Middlewares *************************************************************************
 // The express.static(path, {options}) middleware serves static files to the client. It will look at req.url to 
@@ -116,14 +117,14 @@ app.use(session({
 // app.use(tutorialController.logger);
 // ***************************************************** API endoints **************************************************************************
 
-// app.get('/', taskController.sendLogin);
 
-app.get('/tasks', verifyJWT, postgreMiddleware.getTasks, taskController.sendTasks);
+app.get('/tasks', verifyToken, postgreMiddleware.getTasks, taskController.sendTasks);
 app.post('/add', postgreMiddleware.addTask, taskController.sendTasks);
 app.put('/update', postgreMiddleware.updateTask, taskController.sendTasks);
 app.delete('/delete', postgreMiddleware.deleteTask, taskController.sendTasks);
-app.post('/login', authenticateUserMiddleware, sendJwtToken);
-app.post('/signup', verifySignupInfoMiddleware, signupMiddleware, (req, res) => {
+
+app.post('/login', authenticateUser, sendJwtToken);
+app.post('/signup', validateSignupInfo, signupMiddleware, (req, res) => {
   return res.status(201).send({success: true});
 })
 
@@ -131,11 +132,11 @@ app.post('/signup', verifySignupInfoMiddleware, signupMiddleware, (req, res) => 
 
 // I was able to send a cookie using the res.cookie method. Make sure to send a response, looks like cookies are not consired 
 // as resonse. 
-app.get('/cookie', (req, res) => {
-  console.log('here')
-  res.cookie("greating", "hello-worlds")
-  res.json({greeting: "cookie"})
-});
+// app.get('/cookie', (req, res) => {
+//   console.log('here')
+//   res.cookie("greating", "hello-worlds")
+//   res.json({greeting: "cookie"})
+// });
 
 // ***************************************************** Routes **************************************************************************
 // Members API route
