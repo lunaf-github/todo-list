@@ -29,7 +29,7 @@ const NavBar = function({page}) {
     }
     
     return (
-        nav({class: 'app_popout-border theme--light'}, [
+        nav({class: 'popout-border--square theme--light'}, [
             div({class: 'logo-container'}, [
                 img({src: './logo.png', class: 'logo'}),
                 h1({},'To-Do List')

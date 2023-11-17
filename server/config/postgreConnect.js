@@ -29,7 +29,7 @@ const pool = new Pool({
 // I need to declare and invoke a async function to run the create table query, so an IIFE will do the job.
 // This IIFE is also used to test my PG DB connectoin upon starting my server, because it will trigger the 'connect' event 
 (async function pgConnection() {
-    await pool.query(`CREATE TABLE IF NOT EXISTS ${table} ( _id SERIAL PRIMARY KEY, task varChar(255) NOT NULL);`)
+    await pool.query(`CREATE TABLE IF NOT EXISTS ${table} ( _id SERIAL PRIMARY KEY, username varChar(255) NOT NULL, task varChar(255) NOT NULL);`)
 })();
 
 

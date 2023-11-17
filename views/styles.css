@@ -2,49 +2,60 @@
     box-sizing: border-box;
 }
 
-:root {
-    --primary-lightmode: rgb(167, 182, 207);
-    --secondary-lightmode: rgb(14, 14, 171);
-    --tertiary-lightmode: black;
-
-    --primary-darkmode:rgb(28, 27, 27);
-    --secondary-darkmode:rgb(91, 91, 91);
-    --tertiary-darkmode:white;
-}
-
 body {
     background-color: rgba(0, 0, 0, 0.571);
-    
+    min-height: 100vh;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10px;
 }
 
+:root {
+    --primary-lightmode: rgb(0, 0, 0);
+    --secondary-lightmode: rgb(170, 191, 152);
+    --tertiary-lightmode: white;
+    
+    --primary-darkmode: white;
+    --secondary-darkmode:rgb(91, 91, 91);
+    --tertiary-darkmode:rgb(37, 37, 37);
+}
 
+#root {
+    height: 100vh;
+    font-size: 1.2rem;
+}
 
 .theme--light {
-    color: var(--tertiary-lightmode);
-    background-color: var(--primary-lightmode);
+    color: var(--primar-lightmode);
+    background-color: var(--secondary-lightmode);
 }
 
 .theme--dark {
-
+    color: var(--primary-darkmode);
+    background-color: var(--secondary-darkmode);
 }
 
-.button--light {
-    background-color: var(--secondary-lightmode);
-    color: var(--primary-lightmode);
+
+.popout-border--square {
+    border: 1px solid var(--black);
+    box-shadow: 2px 2px 2px;
+    padding: 5px;
 }
 
-.app_popout-border {
+.popout-border--round {
     border: 1px solid var(--black);
     box-shadow: 2px 2px 2px;
     border-radius: 5px;
     padding: 5px;
 }
 
-.app
+button {
+    background-color: var(--secondary-lightmode);
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px;
 
-.test {
-    background-color: black;
 }
+
 
 .user-inputs {
     display: flex;
@@ -67,7 +78,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 35px;
+    height: 3rem;
     padding: 5px;
     margin-bottom: 10px;
 }

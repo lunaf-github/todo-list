@@ -1,5 +1,4 @@
 class DOM {
-    constructor(){};
 
     root = null;
     div = (props, content) => this.createElement('div', props, content)
@@ -60,6 +59,29 @@ class DOM {
     rerender = function(component) {
         this.root.innerHTML = '';
         this.root.append(component);
+    }
+
+    useEffect = function(component, fn, dependencies) {
+        let initialInvoked = false;
+        let cachedDependencies = [];
+    
+        function helper() {
+            if (initialInvoked) {
+                if (!isChanged(dependencies)) return; 
+            } else {    
+                fn();
+                this.rerender(component);
+            }
+        }p
+    
+        helper();
+    
+        function isChanged(dependencies) {
+            for (let i = 0; i < cachedDependencies.length; i++) {
+                if (cachedDependencies[i] !== dependencies[i]) return true;
+            }
+            return false;
+        }
     }
 }
 
