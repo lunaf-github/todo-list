@@ -1,0 +1,45 @@
+Challenge: Frontend Code and organization architecture
+
+Repetitive code with DOM manipulation: 
+
+The codebase becomes difficult to organize as it grows, because DOM manipulation is imperative and 
+requires more code to add, delete, or update DOM elements. The codebase can easily become messy, repetitive, and 
+tightly coupled making it difficult to add new features and debug problems. 
+
+To reduce the repetitiveness, I develop a utility function that creates elements without having to rewrite the 
+same steps for every element. This greatly reduces the amount of code in our codebase. However, this doesn't solve the code 
+organization problem. The codebase can still become messy as the codebase grows. 
+
+
+Organization of code: 
+
+Because we are using a function to create elements and due to my experience with React, I decided to go for a functional
+component based style to organize my code. The plan is to have a function, my component, run a set of instructions
+to declaravily create components on my UI. The functions will not return anything, and will be meant to 
+directly generate DOM element. But this causes other problems: 
+    1. How will the components interact with each other? 
+    2. What if i want to add children to my components, how can I handle this? 
+    3. Pure side effect functions will make it difficult to debug UI bugs
+ 
+
+Because the code is organized into components, coponents can be used inside other coponents. That way, a tree structure 
+that resembels the DOM tree can be created. Instead of each node being an element, each node is a reusable component. 
+To achieve this, I necided to have the functions return the node elements instead of appending them directly to the DOM. 
+Child components wil add element to the parent coponents. All functions will return DOM elements and will move up to the 
+root function which will return the whole page. 
+
+kpBut, how will the root function append the elements to the DOM? For this reason, I decided to create a render function that
+accepts a container element (root element) as the input and the root function. The root function returns the
+DOM elements and it will get appended to the root element. In order to avoid having to import the createElement
+function and render function individually, I deiced to create them as methods, that way I can import the object, 
+which I called DOM, to our modules and have access to all the methods inside this object. 
+
+Routing:
+The routing between pages is another challenge. This is a sigle page application, so I need to be able to dynamically 
+change pages while only using one document. The best way to achieve this is to create page components. Then, using the 
+switch operator withing the root appp component, I can render the desired page. But, I do need an app level state that 
+will keep track of the current page the user is at. Then, when this state changes, I need the root app component to 
+automatically rerender to display the new page. So I created the rerender method. I would first have to clear out all
+the child elements from the root component, then have the root compnent display the content of the next page. But, I needed
+to grab the root div container, then clear it. Then display the content within this container. But, to grab this container, 
+I could either use dom 

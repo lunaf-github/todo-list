@@ -1,0 +1,26 @@
+Page Switching:
+
+This is a single page application, so I need to be able to dynamically change pages while only using one document. The best 
+way to achieve this is to create page components. Then, using the switch statement inside the root function component. I 
+can use an app level state called 'page' that will keep track of the current page. This state variable can be updated and shared 
+among all components in our app by creating a centralied store. I used the observer pattern to achieve this. 
+
+When user requests to go to another page, the 'page' state changes to reflect the next page. Once the state changes, I need the 
+root function component to automatically rerender to display the new page. To achieved this, a rerender method was created. The
+function would first clear out all the child elements of the root component, then have the root compnent display the content of 
+the next page. But, I needed to grab the root element, in this case a div element, then clear its contents. AFter that, the
+rerender function can append the other page component contents. But, to grab the root element container, I could either use 
+query selector to grab the root or convert the Utility functions into a class. That way, I can use the 'this' keyword to 
+reference the root. I decided to go for the class becuase it is less coupled with the HTML. Now, whenever a the page state changes 
+the rerender function has to be invoked to change the page. 
+
+Next steps: 
+1. It would be nice to have the components rerender automatically after a state change. That way, I don't need to call the rerender
+method manually (Challenge 3)
+
+2. I need components to have their own persistent state as well. Any changes to the state should cause a rerender. The problem 
+isArray that current attemps leads to an infinite loop (Challenge 4)
+
+3. I need to create a life cycle process for each component. 1. When the component is initially mounted. 2. After an update 
+   3. before the element is unmounted
+
