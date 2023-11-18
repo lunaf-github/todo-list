@@ -22,5 +22,5 @@ method manually (Challenge 3)
 isArray that current attemps leads to an infinite loop (Challenge 4)
 
 3. I need to create a life cycle process for each component. 1. When the component is initially mounted. 2. After an update 
-   3. before the element is unmounted
+   3. before the element is unmounted (Challent 5)
 
