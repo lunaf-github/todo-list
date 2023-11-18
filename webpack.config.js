@@ -12,6 +12,12 @@ module.exports = {
         clean: true, // good practice to clean the build folder before each build
     },
     plugins: [
+        /**
+         * This plugin allows webpack to create an HTML file inside our build folder
+         * and adds our bundle files to this HTML document. I can use the index.html
+         * form our src folder as the template for creating this HTML fle. 
+         */ 
+         
         new HtmlWebpackPlugin({
             template: './views/index.html',
             filename: 'index.html',        
@@ -20,10 +26,13 @@ module.exports = {
     module: {
         rules: [
                 {
+                    // We will not be having jsx in this project, but I'll keep this as references for
+                    // future projects. 
                     test: /\.jsx?/,
                     exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
+                        // The order matters, loaders and plugins are read from right to left. 
                         presets: ['@babel/preset-env', '@babel/preset-react'],
                         plugins: ['@babel/plugin-transform-runtime', '@babel/transform-async-to-generator'],
                     }
@@ -43,6 +52,7 @@ module.exports = {
                 }
         ]
     },
+    // Allows us to import modules without having to specify the extensions listed in the enstensions array. 
     resolve: {
         extensions: ['.js']
     },
